@@ -3,3 +3,6 @@ target
 .DS_Store
 logs
 *.png
+TurboScaleTests.java
+browserstack-turboscale.yml
+screenshots/

@@ -10,7 +10,7 @@ accessKey: BROWSERSTACK_ACCESS_KEY
 # ======================
 # The following capabilities are used to set up reporting on BrowserStack:
 # Set 'projectName' to the name of your project. Example, Marketing Website
-projectName: Demo Testng SDK
+projectName: BstackDemo Webinar #Demo Testng SDK
 # Set `buildName` as the name of the job / testsuite being run
 buildName: browserstack-e2e-test
 # `buildIdentifier` is a unique id to differentiate every execution that gets appended to
@@ -29,21 +29,21 @@ framework: testng
 # Platforms object contains all the browser / device combinations you want to test on.
 # Entire list available here -> (https://www.browserstack.com/list-of-browsers-and-platforms/automate)
 platforms:
-#  - os: OS X
-#    osVersion: Big Sur
-#    browserName: Chrome
-#    browserVersion: latest
   - os: Windows
-    osVersion: 10
+    osVersion: 11
+    browserName: Edge
+    browserVersion: latest
+  - os: Windows
+    osVersion: 11
     browserName: Chrome
     browserVersion: latest
-#  - deviceName: Samsung Galaxy S22 Ultra
-#    browserName: chrome
-#    osVersion: 12.0
-#  - deviceName: iPhone 14
-#    browserName: safari
-#    osVersion: 16
-#
+  - deviceName: Google Pixel 8 Pro
+    browserName: chrome
+    osVersion: 14.0
+  - deviceName: iPhone 14
+    browserName: safari
+    osVersion: 16
+
 # =======================
 # Parallels per Platform
 # =======================
@@ -53,10 +53,11 @@ platforms:
 # Example 1 - If you have configured 3 platforms and set `parallelsPerPlatform` as 2, a total of 6 (2 * 3) parallel threads will be used on BrowserStack
 #
 # Example 2 - If you have configured 1 platform and set `parallelsPerPlatform` as 5, a total of 5 (1 * 5) parallel threads will be used on BrowserStack
+
 parallelsPerPlatform: 1
 # this determines the number of parallels to be spawned (this x number of platforms specified) -> the no .of test cases would determine on the
 #no.of. scenarios x the platform combination (4 scenarios x 3 platforms = 12 sessions)
-
+selfHeal: true
 source: testng:archetype-setup:v1.5
 
 # ==========================================
@@ -65,19 +66,24 @@ source: testng:archetype-setup:v1.5
 # ==========================================
 # Set browserStackLocal to true if your website under test is not accessible publicly over the internet
 # Learn more about how BrowserStack Local works here -> https://www.browserstack.com/docs/automate/selenium/local-testing-introduction
-browserstackLocal: false # <boolean> (Default false)
-
+browserstackLocal: true # <boolean> (Default false)
+#browserStackLocalOptions:
+#  forceLocal: true
 # Options to be passed to BrowserStack local in-case of advanced configurations
 # browserStackLocalOptions:
   # localIdentifier: # <string> (Default: null) Needed if you need to run multiple instances of local.
   # forceLocal: true  # <boolean> (Default: false) Set to true if you need to resolve all your traffic via BrowserStack Local tunnel.
   # Entire list of arguments available here -> https://www.browserstack.com/docs/automate/selenium/manage-incoming-connections
-  
+percy: true
+percyCaptureMode: auto
 # ===================
 # Debugging features
 # ===================
-debug: false # <boolean> # Set to true if you need screenshots for every selenium command ran
+accessibility: true
+testObservability: true
+
+debug: true # <boolean> # Set to true if you need screenshots for every selenium command ran
 networkLogs: false # <boolean> Set to true to enable HAR logs capturing
 consoleLogs: errors # <string> Remote browser's console debug levels to be printed (Default: errors)
 # Available options are `disable`, `errors`, `warnings`, `info`, `verbose` (Default: errors)
-browserstack.geoLocation: BE
+#browserstack.geoLocation: UZ

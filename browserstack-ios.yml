@@ -24,7 +24,7 @@ buildIdentifier: '#${BUILD_NUMBER}' # Supports strings along with either/both ${
 # This property is needed to send test context to BrowserStack (test name, status)
 framework: testng
 
-source: testng:appium-sample-sdk:v1.0
+#source: testng:appium-sample-sdk:v1.0
 
 app: ./src/test/resources/BStackSampleApp.ipa
 #app: ./src/test/resources/LocalSample.ipa #For running local tests
@@ -36,8 +36,8 @@ app: ./src/test/resources/BStackSampleApp.ipa
 # Entire list available here -> (https://www.browserstack.com/list-of-browsers-and-platforms/automate)
 
 platforms:
-  - deviceName: iPhone 14 Pro
-    osVersion: 16
+  - deviceName: iPhone 15
+    osVersion: 17
     platformName: ios
   - deviceName: iPhone 11 Pro Max
     osVersion: 13
@@ -56,6 +56,8 @@ platforms:
 #
 # Example 2 - If you have configured 1 platform and set `parallelsPerPlatform` as 5, a total of 5 (1 * 5) parallel threads will be used on BrowserStack
 parallelsPerPlatform: 1
+appProfiling: true
+#appiumVersion: 2.0.1
 
 # ==========================================
 # BrowserStack Local
@@ -63,7 +65,7 @@ parallelsPerPlatform: 1
 # ==========================================
 # Set browserStackLocal to true if your website under test is not accessible publicly over the internet
 # Learn more about how BrowserStack Local works here -> https://www.browserstack.com/docs/automate/selenium/local-testing-introduction
-browserstackLocal: false # <boolean> (Default false)
+browserstackLocal: true # <boolean> (Default false)
 #browserStackLocalOptions:
 #Options to be passed to BrowserStack local in-case of advanced configurations
 #  localIdentifier: # <string> (Default: null) Needed if you need to run multiple instances of local.
@@ -73,7 +75,9 @@ browserstackLocal: false # <boolean> (Default false)
 # ===================
 # Debugging features
 # ===================
-debug: false # <boolean> # Set to true if you need screenshots for every selenium command ran
-networkLogs: false # <boolean> Set to true to enable HAR logs capturing
+debug: true # <boolean> # Set to true if you need screenshots for every selenium command ran
+networkLogs: true # <boolean> Set to true to enable HAR logs capturing
 consoleLogs: errors # <string> Remote browser's console debug levels to be printed (Default: errors)
 # Available options are `disable`, `errors`, `warnings`, `info`, `verbose` (Default: errors)
+percy: true
+percyCaptureMode: auto

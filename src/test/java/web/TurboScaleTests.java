@@ -1,58 +1,51 @@
 package web;
 
+import org.json.JSONObject;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v105.page.Page;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import org.apache.commons.io.FileUtils;
 
-public class TraditionalTest {
+public class TurboScaleTests {
     public WebDriver driver;
     public String username = System.getenv("BROWSERSTACK_USERNAME");
     public String accesskey = System.getenv("BROWSERSTACK_ACCESS_KEY");
-    @Parameters({"device","browser"})
     @BeforeMethod
-    public void setup(@Optional String device, @Optional String browser) throws MalformedURLException {
+    public void setup() throws MalformedURLException {
 
-        DesiredCapabilities caps = new DesiredCapabilities();
-        caps.setCapability("device",device);
-        caps.setCapability("browser",browser);
-        caps.setCapability("build","Tradition Test Execution");
-        caps.setCapability("project","Parallel runs");
-        caps.setCapability("name","parallel_test");
-        caps.setCapability("interactiveDebugging","true");
-        caps.setCapability("debug","false");
+        ChromeOptions browserOptions = new ChromeOptions();
+        HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();
+        browserstackOptions.put("browser", "chrome");
+//        browserstackOptions.put("browserVersion", "latest");
+        browserstackOptions.put("projectName", "TurbosScale Project");
+        browserstackOptions.put("buildName", "Bstackdemo Web Tests");
+        browserstackOptions.put("sessionName", "e2eTest");
+//        browserstackOptions.put("buildTags", new String[]{"e2e"});
+        browserstackOptions.put("username", username);
+        browserstackOptions.put("accessKey", accesskey);
+        browserOptions.setCapability("bstack:options", browserstackOptions);
 
-        driver = new RemoteWebDriver(new URL("https://"+username+":"+accesskey+"@hub-cloud.browserstack.com/wd/hub"),caps);
+        driver = new RemoteWebDriver(new URL("https://xsp07ibw-hub.browserstack-ats.com/wd/hub"),browserOptions);
+
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-
     }
     @Test
-    public void test() throws InterruptedException, IOException {
-
+    public void test() throws InterruptedException {
         JavascriptExecutor jse = (JavascriptExecutor)driver;
         driver.get("https://bstackdemo.com/");
-
         driver.findElement(By.id("signin")).click();
         driver.findElement(By.cssSelector("#username input")).sendKeys("demouser", Keys.ENTER);
         driver.findElement(By.cssSelector("#password input")).sendKeys("testingisfun99", Keys.ENTER);
         driver.findElement(By.id("login-btn")).click();
-        jse.executeScript("browserstack_executor: {\"action\": \"annotate\", \"arguments\": {\"data\": \"Logged In\", \"level\": \"info\"}}");
 
         String productName = "iPhone 12";
         List<WebElement> allProductsList = driver.findElements(By.cssSelector(".shelf-item"));
@@ -66,7 +59,7 @@ public class TraditionalTest {
                 continue;
             }
         }
-        //driver.findElement(By.cssSelector(".float-cart__close-btn")).click();
+
         driver.findElement(By.cssSelector(".buy-btn")).click();
         driver.findElement(By.id("firstNameInput")).sendKeys("Nithya");
         driver.findElement(By.id("lastNameInput")).sendKeys("Mani");
@@ -75,14 +68,6 @@ public class TraditionalTest {
         driver.findElement(By.id("postCodeInput")).sendKeys("400080");
         driver.findElement(By.cssSelector("button[type='submit']")).click();
 
-//        TakesScreenshot screenshot = (TakesScreenshot)driver;
-//        File source = screenshot.getScreenshotAs(OutputType.FILE);
-//        FileUtils.copyFile(source, new File("./screenshots/Screen.png"));
-
-
-        //Log values - info/warn/debug/error
-        jse.executeScript("browserstack_executor: {\"action\": \"annotate\", \"arguments\": {\"data\": \"Order placed\", \"level\": \"info\"}}");
-
         String confirmationMessage = driver.findElement(By.id("confirmation-message")).getText();
         String orderId = driver.findElement(By.cssSelector(".checkout-form div:nth-child(2) strong")).getText();
         Assert.assertTrue(confirmationMessage.contains("successfully"));
@@ -90,12 +75,26 @@ public class TraditionalTest {
     @AfterMethod
     public void teardown(ITestResult result){
         JavascriptExecutor jse = (JavascriptExecutor)driver;
+
         if( result.getStatus() == ITestResult.SUCCESS) {
-            jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\": \"passed\", \"reason\": \""+result.getName()+" passed!\"}}");
+            //jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\": \"passed\", \"reason\": \""+result.getName()+" passed!\"}}");
+            setSessionStatus("passed","Order placed successfully!");
         }
         else{
-            jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\": \"failed\", \"reason\": \""+result.getThrowable()+"\"}}");
+            //jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\": \"failed\", \"reason\": \""+result.getThrowable()+"\"}}");
+            setSessionStatus("failed","Something went wrong!");
         }
         driver.quit();
+    }
+
+    public void setSessionStatus(String status, String reason){
+        final JavascriptExecutor jse = (JavascriptExecutor) driver;
+        JSONObject executorObject = new JSONObject();
+        JSONObject argumentsObject = new JSONObject();
+        argumentsObject.put("status", status);
+        argumentsObject.put("reason", reason);
+        executorObject.put("action", "setSessionStatus");
+        executorObject.put("arguments", argumentsObject);
+        jse.executeScript(String.format("browserstack_executor: %s", executorObject));
     }
 }

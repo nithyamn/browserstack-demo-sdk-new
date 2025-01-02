@@ -1,7 +1,10 @@
 package app.android;
 
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
+//import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.Test;
 
@@ -33,18 +36,18 @@ public class DeviceFeaturesAndroid {
         driver.executeScript("browserstack_executor: {\"action\":\"cameraImageInjection\", \"arguments\": {\"imageUrl\" : \""+mediaUrl+"\"}}");
         driver.findElement(By.id("com.example.all_in_one:id/camintent")).click();
         driver.findElement(By.id("com.example.all_in_one:id/camera_button")).click();
-        driver.findElement(By.id("com.android.permissioncontroller:id/permission_allow_foreground_only_button")).click();
+        //driver.findElement(By.id("com.android.permissioncontroller:id/permission_allow_foreground_only_button")).click();
 
-        try{
-            driver.findElement(By.id("com.android.permissioncontroller:id/permission_allow_button")).click();
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        try{
-            driver.findElement(By.id("com.android.permissioncontroller:id/permission_allow_foreground_only_button")).click();
-        }catch (Exception e){
-            System.out.println(e);
-        }
+//        try{
+//            driver.findElement(By.id("com.android.permissioncontroller:id/permission_allow_button")).click();
+//        }catch (Exception e){
+//            System.out.println(e);
+//        }
+//        try{
+//            driver.findElement(By.id("com.android.permissioncontroller:id/permission_allow_foreground_only_button")).click();
+//        }catch (Exception e){
+//            System.out.println(e);
+//        }
         driver.findElement(By.id("com.google.android.GoogleCamera:id/center_placeholder")).click();
         driver.findElement(By.id("com.google.android.GoogleCamera:id/center_placeholder")).click();
         Thread.sleep(2000);
@@ -94,4 +97,30 @@ public class DeviceFeaturesAndroid {
         Thread.sleep(5000);
         driver.quit();
     }
+
+    @Test
+    public void devicePasscodeTest() throws MalformedURLException, InterruptedException {
+        DesiredCapabilities caps = new DesiredCapabilities();
+        caps.setCapability("deviceName","Google Pixel 7");
+        caps.setCapability("build","Device Features - Android");
+        caps.setCapability("name","passcodeTest");
+        caps.setCapability("autoGrantPermissions","true");
+        caps.setCapability("interactiveDebugging","true");
+        caps.setCapability("enablePasscode","true");
+        caps.setCapability("app",BROWSERSTACK_APP_ID); //regression.apk
+
+        AndroidDriver driver = new AndroidDriver(new URL("https://"+username+":"+accessKey+"@hub-cloud.browserstack.com/wd/hub"),caps);
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        Thread.sleep(3000);
+
+
+        driver.findElement(By.id("com.example.all_in_one:id/passcode")).click();
+
+        //driver.findElement(By.id("com.example.all_in_one:id/passcode")).click();
+        driver.findElement(By.id("com.example.all_in_one:id/deviceSecure")).click();
+        Thread.sleep(5000);
+        driver.quit();
+    }
+
+
 }

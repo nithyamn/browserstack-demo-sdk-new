@@ -13,6 +13,7 @@ public class iOSTest extends iOSBaseTest {
 
   @Test
   public void testOutputField() throws Exception {
+    appPercy.screenshot("First iOS Screenshot", false);
     WebElement textButton = (WebElement) new WebDriverWait(driver, Duration.ofSeconds(30)).until(
         ExpectedConditions.elementToBeClickable(AppiumBy.accessibilityId("Text Button")));
     textButton.click();

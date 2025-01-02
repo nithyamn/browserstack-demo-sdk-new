@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Single" parallel="tests" thread-count="1">
-    <test name="SingleTest1">
+<suite name="Basic" parallel="tests" thread-count="1">
+    <test name="Basic">
         <classes>
-            <class name="web.SingleWeb"/>
+            <class name="web.BasicTest"/>
         </classes>
     </test>
 </suite>
