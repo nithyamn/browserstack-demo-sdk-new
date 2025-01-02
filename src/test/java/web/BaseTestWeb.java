@@ -18,7 +18,7 @@ import java.util.Map;
 
 
 public class BaseTestWeb {
-    public IOSDriver driver;
+    public WebDriver driver;
     public static final String AUTOMATE_USERNAME = System.getenv("BROWSERSTACK_USERNAME");
     public static final String AUTOMATE_KEY = System.getenv("BROWSERSTACK_ACCESS_KEY");
     public static final String URL = "https://" + AUTOMATE_USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
@@ -28,13 +28,12 @@ public class BaseTestWeb {
 //        ChromeOptions options = new ChromeOptions();
 //        options.addArguments("start-maximized");
         Map<String, Object> chromePrefs = new HashMap<>();
-        chromePrefs.put("credentials_enable_service", false);
-        chromePrefs.put("profile.password_manager_enabled", false);
-        chromePrefs.put("profile.password_manager_leak_detection", false);
+//        chromePrefs.put("credentials_enable_service", false);
+//        chromePrefs.put("profile.password_manager_enabled", false);
+//        chromePrefs.put("profile.password_manager_leak_detection", false);
         ChromeOptions options = new ChromeOptions();
-        options.setExperimentalOption("prefs", chromePrefs);
-        //driver = new ChromeDriver(options);
-        driver = new IOSDriver(new URL(URL),options);
+//        options.setExperimentalOption("prefs", chromePrefs);
+        driver = new ChromeDriver(options);
 
 //        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 
