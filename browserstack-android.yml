@@ -13,7 +13,7 @@ accessKey: BROWSERSTACK_ACCESS_KEY
 # Set 'projectName' to the name of your project. Example, Marketing Website
 projectName: Demo SDK Appium Android
 # Set `buildName` as the name of the job / testsuite being run
-buildName: browserstack-testng-appium-suite
+buildName: browserstack-testng-appium-suite 2.6.0
 # `buildIdentifier` is a unique id to differentiate every execution that gets appended to
 # buildName. Choose your buildIdentifier format from the available expressions:
 # ${BUILD_NUMBER} (Default): Generates an incremental counter with every execution
@@ -70,7 +70,7 @@ browserstackLocal: false # <boolean> (Default false)
 #  localIdentifier: # <string> (Default: null) Needed if you need to run multiple instances of local.
 #  forceLocal: true  # <boolean> (Default: false) Set to true if you need to resolve all your traffic via BrowserStack Local tunnel.
 # Entire list of arguments available here -> https://www.browserstack.com/docs/automate/selenium/manage-incoming-connections
-appiumVersion: 2.4.1
+appiumVersion: 2.6.0
 # ===================
 # Debugging features
 # ===================
